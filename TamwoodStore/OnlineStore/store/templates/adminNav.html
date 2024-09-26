@@ -1,0 +1,110 @@
+<!-- templates/adminNav.html -->
+<nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container">
+        <a class="navbar-brand custom-brand" href="{% url 'home' %}">Staff Dashboard</a>
+        <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link custom-link" href="{% url 'add_product' %}">Add/Update Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link custom-link" href="{% url 'view_carts' %}">View Customer Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link custom-link" href="{% url 'product_list' %}">Product List</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link custom-logout ml-3" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* General Navbar Styling */
+    .custom-navbar {
+        background-color: #2a2d34; /* Dark charcoal background */
+        padding: 20px 30px;
+        border-bottom: 4px solid #00aaff; /* Professional light blue border */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+    }
+
+    .custom-brand {
+        font-size: 24px;
+        color: #00aaff; /* Professional light blue for brand */
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .custom-brand:hover {
+        color: #0088cc; /* Slightly darker blue on hover */
+    }
+
+    /* Navbar Links Styling */
+    .custom-link {
+        font-size: 16px;
+        font-weight: 500;
+        color: #f1f1f1; /* Light gray for text */
+        transition: color 0.3s ease, font-weight 0.3s ease;
+    }
+
+    .custom-link:hover {
+        color: #00aaff; /* Light blue on hover */
+        font-weight: 600;
+    }
+
+    /* Logout Button Styling */
+    .custom-logout {
+        padding: 10px 20px;
+        background-color: transparent;
+        color: #ff4d4d; /* Professional red for logout button */
+        border: 2px solid #ff4d4d;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .custom-logout:hover {
+        background-color: #ff4d4d; /* Red background on hover */
+        color: #fff;
+    }
+
+    /* Custom Toggler Icon for mobile */
+    .custom-toggler {
+        border: none;
+    }
+
+    .custom-toggler .navbar-toggler-icon {
+        color: #fff;
+    }
+
+    /* Additional Navbar Styles */
+    .custom-navbar .navbar-collapse {
+        justify-content: flex-end;
+    }
+
+    .custom-navbar .navbar-nav .nav-item {
+        margin-right: 20px;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+        .custom-navbar {
+            padding: 15px;
+        }
+
+        .custom-link {
+            font-size: 15px;
+        }
+
+        .custom-logout {
+            padding: 8px 15px;
+        }
+    }
+</style>

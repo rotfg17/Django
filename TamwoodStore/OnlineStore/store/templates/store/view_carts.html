@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Carts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Encapsular el estilo dentro de .view-carts-container */
+        .view-carts-container {
+            background-color: #f9f9f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 50px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
+
+        .view-carts-container h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* Table Styling */
+        .view-carts-container .table {
+            width: 100%;
+            background-color: #fff;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .view-carts-container .table thead th {
+            background-color: #007bff;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 12px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .view-carts-container .table tbody td {
+            padding: 12px;
+            color: #555;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .view-carts-container .table tbody ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .view-carts-container .table tbody ul li {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Button Styling */
+        .view-carts-container .btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.2s ease;
+        }
+
+        .view-carts-container .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .view-carts-container .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .view-carts-container .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .view-carts-container .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .view-carts-container .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .view-carts-container .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .view-carts-container .table thead {
+                display: none;
+            }
+
+            .view-carts-container .table, 
+            .view-carts-container .table tbody, 
+            .view-carts-container .table tr, 
+            .view-carts-container .table td {
+                display: block;
+                width: 100%;
+            }
+
+            .view-carts-container .table tr {
+                margin-bottom: 15px;
+                border-bottom: 2px solid #dee2e6;
+            }
+
+            .view-carts-container .table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            .view-carts-container .table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+                color: #333;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'adminNav.html' %}
+
+    <!-- Encapsular la vista dentro de view-carts-container -->
+    <div class="container view-carts-container">
+        <h2>Pending Carts</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cart ID</th>
+                    <th>Customer</th>
+                    <th>Total Price</th>
+                    <th>Products</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cart in carts %}
+                <tr>
+                    <td data-label="Cart ID">{{ cart.id }}</td>
+                    <td data-label="Customer">{{ cart.customer.username }}</td>
+                    <td data-label="Total Price">${{ cart.total_price|floatformat:2 }}</td>
+                    <td data-label="Products">
+                        <ul>
+                            {% for item in cart.items %}
+                            <li>{{ item.product.name }} - ${{ item.product.price }} (x{{ item.quantity }})</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td data-label="Action">
+                        <a href="{% url 'approve_cart' cart.id %}" class="btn btn-success">Approve</a>
+                        <a href="{% url 'reject_cart' cart.id %}" class="btn btn-danger">Reject</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No pending carts available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* General Body Styling */
+        body {
+            background-color: #eef2f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 50px;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #222;
+            font-size: 28px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        thead th {
+            background-color: #4a4e69;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 14px;
+            padding: 12px;
+            border: none;
+        }
+
+        tbody td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+
+        /* Button Styling */
+        .btn {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 30px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary-custom {
+            background-color: #2d6a4f;
+            color: white;
+            border: none;
+        }
+
+        .btn-warning-custom {
+            background-color: #f4a261;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger-custom {
+            background-color: #e63946;
+            color: white;
+            border: none;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .form-group input {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        /* Alert Styling */
+        .alert {
+            background-color: #dff0d8;
+            border-color: #c3e6cb;
+            color: #155724;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* No Products Styling */
+        .no-products {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #888;
+        }
+
+        /* Custom Back and Cart Button */
+        .custom-back-btn,
+        .custom-cart-btn {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .custom-back-btn:hover,
+        .custom-cart-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Incluir el navbar -->
+    {% include 'navbar.html' %}
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Available Products</h2>
+
+        <!-- Mostrar mensajes de éxito o error -->
+        {% if messages %}
+        <div class="alert" role="alert">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Tabla de productos -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>${{ product.price }}</td>
+                    <td>
+                        <div class="actions-form">
+                            {% if user.is_authenticated and user.is_staff %}
+                            <!-- Los usuarios staff pueden editar o eliminar productos -->
+                            <a href="{% url 'update_product' product.id %}" class="btn btn-warning-custom">Edit</a>
+                            <form method="post" action="{% url 'delete_product' product.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger-custom">Delete</button>
+                            </form>
+                            {% elif user.is_authenticated %}
+                            <!-- Los clientes pueden agregar productos al carrito -->
+                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="number" name="quantity" min="1" value="1" required>
+                                    <button type="submit" class="btn btn-primary-custom">Add to Cart</button>
+                                </div>
+                            </form>
+                            {% else %}
+                            <p>You need to be logged in to add products to the cart.</p>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="no-products">No products available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Botón para que los clientes vean el carrito cuando lo deseen -->
+        {% if user.is_authenticated and not user.is_staff %}
+        <a href="{% url 'view_cart' %}" class="custom-cart-btn">View Cart</a>
+        {% endif %}
+
+        <a href="{% url 'home' %}" class="custom-back-btn">Back</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+
+    <!-- Cargar archivos estáticos -->
+    {% load static %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Estilo para la imagen de fondo */
+        body {
+            height: 100vh;
+            background-image: url('https://marketplace.canva.com/EAFzje8Pffo/1/0/1600w/canva-colorful-illustrative-organic-grocery-online-shop-logo-Alka_dqR_gQ.jpg');
+            background-size: cover;
+            background-position: center;
+           
+            align-items: center;
+            color: #fff;
+        }
+
+        /* Mantener el contenido por encima de la imagen de fondo */
+        .dashboard-content {
+            background-color: rgba(255, 255, 255, 0.85); /* Fondo blanco semitransparente */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #343a40;
+        }
+
+        p {
+            color: #343a40;
+        }
+
+        /* Asegura que el contenido no cubra el navbar */
+        .container {
+            margin-top: 100px; /* Espacio adicional para el navbar */
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %} <!-- No se modifica el navbar -->
+
+    <!-- Content Section -->
+    <div class="container text-center">
+        <div class="dashboard-content">
+            <h1>Welcome, {{ request.user.username }}!</h1>
+            <p>Explore the options above to manage your account and purchases.</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

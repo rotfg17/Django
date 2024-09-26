@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 50px;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #222;
+            font-size: 28px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        thead th {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 14px;
+            padding: 12px;
+            border: none;
+        }
+
+        tbody td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-warning {
+            background-color: #f4a261;
+        }
+
+        .badge-success {
+            background-color: #2d6a4f;
+        }
+
+        .badge-danger {
+            background-color: #e63946;
+        }
+
+        /* Custom Buttons */
+        .btn {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 30px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger-custom {
+            background-color: #e63946;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary-custom {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger-custom:hover,
+        .btn-secondary-custom:hover {
+            opacity: 0.85;
+        }
+
+        .total-price {
+            font-weight: 600;
+            font-size: 18px;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Your Cart</h2>
+
+        
+
+        {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>${{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total_price|floatformat:2 }}</td>
+                    <td>
+                        {% if item.status == 'P' %}
+                        <span class="badge badge-warning">Pending</span>
+                        {% elif item.status == 'A' %}
+                        <span class="badge badge-success">Approved</span>
+                        {% elif item.status == 'R' %}
+                        <span class="badge badge-danger">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <!-- Botón para eliminar el producto del carrito -->
+                        <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger-custom">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="total-price"><strong>Total Price: </strong> ${{ cart.calculate_total|floatformat:2 }}</p>
+        {% else %}
+        <p class="empty-cart">Your cart is empty.</p>
+        {% endif %}
+
+        <a href="{% url 'view_products' %}" class="btn btn-secondary-custom">Continue Shopping</a>
+    </div>
+</body>
+
+</html>

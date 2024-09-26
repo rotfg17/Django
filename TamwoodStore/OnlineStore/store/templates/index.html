@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Store</title>
+
+    <!-- Cargar archivos estáticos -->
+    {% load static %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Imagen de fondo */
+        body {
+            background-image: url("https://www.arcticgardens.ca/blog/wp-content/uploads/2015/09/shop-smart-at-the-supermarket.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar transparente con un ligero desenfoque */
+        .custom-navbar {
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+
+        /* Efecto de oscurecimiento en el body cuando el modal está abierto */
+        body.modal-open {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Centrar los modales en el medio de la pantalla */
+        .modal-dialog-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Estilo personalizado del modal para login y register con transparencia */
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo semitransparente oscuro */
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: none;
+            backdrop-filter: blur(10px); /* Desenfoque del fondo */
+            color: #fff; /* Texto blanco para contrastar */
+        }
+
+        /* Diseño liso y profesional para los títulos */
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff; /* Título en blanco */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos minimalistas para los campos de formulario */
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.2); /* Fondo del input semitransparente */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Bordes claros y suaves */
+            padding: 12px;
+            border-radius: 4px;
+            width: 100%;
+            box-shadow: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #fff; /* Texto blanco */
+        }
+
+        .form-control:focus {
+            border-color: #00aaff;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo más claro al enfocar */
+        }
+
+        /* Botón estilizado */
+        .btn-custom {
+            background-color: #00aaff;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #0088cc;
+        }
+
+        /* Botón para cerrar el modal */
+        .close {
+            color: #fff;
+        }
+
+        .close:hover {
+            color: #ccc;
+        }
+
+        /* Etiquetas del formulario */
+        .form-group label {
+            font-size: 14px;
+            color: #fff;
+            font-weight: normal;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="#">Grocery Store</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#registerModal">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal de Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn-custom">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Register -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn-custom">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

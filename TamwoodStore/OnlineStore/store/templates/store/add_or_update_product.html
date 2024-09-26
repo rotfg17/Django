@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if product.id %}Update Product{% else %}Add Product{% endif %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Styling specific to the form container */
+        .product-form-container {
+            max-width: 700px;
+            margin-top: 50px;
+            background-color: #ffffff; /* White background */
+            padding: 40px;
+            border-radius: 5px;
+            border: 1px solid #e3e3e3; /* Soft border for separation */
+        }
+
+        .product-form-container h2 {
+            font-size: 24px;
+            color: #333333;
+            font-weight: 500;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        /* Form Styling */
+        .product-form-container .form-group label {
+            font-weight: 600;
+            color: #555555;
+            font-size: 14px;
+        }
+
+        .product-form-container .form-control {
+            border-radius: 2px;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            background-color: #fafafa;
+            font-size: 15px;
+        }
+
+        .product-form-container .form-control:focus {
+            border-color: #0056b3; /* Professional blue border on focus */
+            background-color: #ffffff;
+            box-shadow: none;
+        }
+
+        /* Button Styling */
+        .product-form-container .btn-primary {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            font-size: 15px;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .product-form-container .btn-primary:hover {
+            background-color: #00408f;
+            border-color: #003070;
+        }
+
+        .product-form-container .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            font-size: 15px;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .product-form-container .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #495057;
+        }
+
+        /* Adjustments */
+        .product-form-container .mt-5 {
+            margin-top: 3rem !important;
+        }
+
+        .product-form-container .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'adminNav.html' %}
+
+    <div class="container product-form-container">
+        <h2>{% if product.id %}Update Product{% else %}Add New Product{% endif %}</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="name">Product Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ product.name }}" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" id="price" name="price" class="form-control" value="{{ product.price }}" required>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'product_list' %}" class="btn btn-secondary mr-2">Back to List</a>
+                <button type="submit" class="btn btn-primary">{% if product.id %}Update Product{% else %}Add Product{% endif %}</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

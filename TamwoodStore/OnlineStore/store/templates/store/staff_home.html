@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+
+    <!-- Cargar archivos estáticos -->
+    {% load static %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Estilo para la imagen de fondo del Dashboard Home */
+        .dashboard-home {
+            height: 89.9vh;
+            background-image: url('https://marketplace.canva.com/EAFzje8Pffo/1/0/1600w/canva-colorful-illustrative-organic-grocery-online-shop-logo-Alka_dqR_gQ.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .dashboard-title {
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Estilo para el contenido que se mostrará después de hacer clic */
+        .main-content {
+            display: none; /* Oculto inicialmente */
+            padding: 50px 20px;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'adminNav.html' %}
+
+    <!-- Imagen de fondo inicial (Home del Dashboard) -->
+    <div id="dashboard-home" class="dashboard-home">
+        <h1 class="dashboard-title">Welcome to the Admin Dashboard</h1>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        // Función para mostrar el contenido y ocultar la imagen de fondo
+        function showContent() {
+            document.getElementById('dashboard-home').style.display = 'none'; // Oculta la imagen de fondo
+            document.getElementById('main-content').style.display = 'block'; // Muestra el contenido principal
+        }
+
+        // Función para volver a mostrar el Home (imagen de fondo)
+        function showHome() {
+            document.getElementById('dashboard-home').style.display = 'flex'; // Muestra la imagen de fondo
+            document.getElementById('main-content').style.display = 'none'; // Oculta el contenido
+        }
+    </script>
+
+</body>
+
+</html>
